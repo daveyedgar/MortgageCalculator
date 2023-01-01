@@ -1,0 +1,38 @@
+@use 'colors';
+@use '_footer';
+
+
+body{
+  color: var(--primary-color);
+}
+
+nav{
+  background-color: var(--dark-color);
+}
+
+
+h1,h2,h3,h4,h5,h6{
+  color: var(--primary-color);
+}
+
+main .container {
+  padding: 60px 15px 0;
+  margin-bottom: 5rem;
+}
+
+.checklist>li i{
+   color: var(--secondary-color);
+}
+
+.project-icons img{
+  height: 50px;
+  width: auto;
+}
+
+// prism custom css
+code[class*="language-"],
+pre[class*="language-"] {
+white-space: pre-wrap;
+word-break: normal;
+word-wrap: normal;
+}
