@@ -27,11 +27,24 @@ function getValues() {
 
 function generateResults(valuesObj) {
   let results = [];
+  let mPay = (valuesObj.loanAmount) * (valuesObj.rate / 1200) / (1 - Math.pow((1 + valuesObj.rate / 1200), -valuesObj.payments));
+  let previousBalance = valuesObj.loanAmount;
+
   for(let i = 1; i <= valuesObj.payments; i++){
-    // Do the math
+
+    // interestPayment: loanAmount or balance[i - 1] * rate/1200,
+    // if(i = 1){
+    //   previousBalance = valuesObj.loanAmount;
+    // } else {
+    //   previousBalance = previousBalance[i - 1];
+    // }
+
+
     results.push({
       month: i,
-      monthlyPayment: (valuesObj.loanAmount) * (valuesObj.rate / 1200) / (1 - Math.pow((1 + valuesObj.rate / 1200), -valuesObj.payments))
+      monthlyPayment: mPay.toFixed(2),
+      interestPayment: previousBalance
+      
     });
     // valuesObj['month'] = i;
     // valuesObj['monthlyPayment'] = (valuesObj.loanAmount) * (valuesObj.rate / 1200) / (1 - Math.pow((1 + valuesObj.rate / 1200), -valuesObj.payments))
@@ -55,18 +68,25 @@ function displayResults(results) {
   for (let i = 0; i <= results.length-1; i++) {
     let month = results[i].month;
     let monthlyPayment = results[i].monthlyPayment;
+    let interestPayment = results[i].interestPayment;
 
 
   templateRows = templateRows + 
   `<tr>
     <td>${month}</td>
     <td>${monthlyPayment}</td>
+    <td>xx</td>
+    <td>${interestPayment}</td>
   </tr>`;
   }
 
   document.getElementById("results").innerHTML = templateRows;
+
+  // this is for the header, not the table
   monthlyPaymentTag = document.getElementById("monthlyPayment");
   monthlyPaymentTag.innerHTML = results[0].monthlyPayment;
+
+  // see the code link
   let codeLink = document.getElementById("codeLink");
   codeLink.innerHTML = '<a href="code.html">See The Code</a>'
 }
