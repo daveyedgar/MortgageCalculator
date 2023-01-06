@@ -1,5 +1,6 @@
 @use 'colors';
 @use '_footer';
+@use 'prism';
 
 
 body{
@@ -29,10 +30,34 @@ main .container {
   width: auto;
 }
 
-// prism custom css
 code[class*="language-"],
 pre[class*="language-"] {
 white-space: pre-wrap;
 word-break: normal;
 word-wrap: normal;
+}
+
+.about-value{
+  color: blue;
+}
+
+.round-value{
+  color: #FF70FF;
+  color: red;
+}
+
+.roundabout{
+  font-weight: bold;
+  color: orange;
+}
+.font-normal{
+  font-weight: 400;
+}
+
+.bg-gray{
+  background-color: #e7e7e7;
+}
+
+.theadbg{
+  background-color: #033762;
 }

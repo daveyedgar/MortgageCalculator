@@ -2,7 +2,7 @@
 <html lang="en" class="h-100">
 
 <head>
-    <title>App Name: A Coding Project By David Bellerose</title>
+    <title>Mortgage Calculator: A Coding Project By David Bellerose</title>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,8 +10,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-        <link href="assets/vendor/prism/prism.css" rel="stylesheet">
-        <link href="assets/css/main.css" rel="stylesheet">
+    <link href="assets/css/main.css" rel="stylesheet">
     <link href="assets/img/favicon_a.svg" rel="icon">
     <script src="https://kit.fontawesome.com/45e2949365.js" crossorigin="anonymous"></script>
 </head>
@@ -20,7 +19,7 @@
 <!-- NAV  -->
     <nav class="navbar navbar-expand-md bg-dark navbar-dark fixed-top">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src="assets/img/favicon_a.svg" class="d-inline-block align-text-top me-2">APP NAME</a>
+        <a class="navbar-brand" href="#"><img src="assets/img/favicon_a.svg" class="d-inline-block align-text-top me-2">Mortgage Calculator</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
             aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -50,38 +49,215 @@
 <!-- MAIN -->
 <main class="flex-shrink-0 mt-5">
   <div class="container py-4 px-5 mt-5">
-    <h2 class="border-1 border-bottom border-dark">The Code for App Name</h2>
+    <h2 class="border-1 border-bottom border-dark">The Code for Mortgage Calculator</h2>
     <div class="row row-cols-1 row-cols-lg-2">
         <div class="col-lg-8">
             <pre class="line-numbers">
                 <code class="language-javascript">
-                    // test function ;&lt;
-                    function one(){
-                        alert("one")
-                    }
+// This first section of code handles the drop down list and button
+// It will determine which code version was selected and pass that
+//   to the getValues function via an argument.
+
+const btn = document.querySelector('#btnSubmit');
+const sb = document.querySelector('#inputGroupSelect');
+btn.onclick = (event) => {
+    let codeVersion = "";
+    event.preventDefault();
+    // show the selected index
+    switch (sb.value){
+        case "1":{
+        codeVersion = "generateResults";
+        break;
+        }
+        case "2": {
+        codeVersion = "generateResultsSwitch";
+        break;
+        }
+        case "3": {
+        codeVersion = "generateResultsTern";
+        break;
+        }
+        default :{
+        codeVersion = "generateResults";
+        break;
+        }
+    }
+    getValues(codeVersion);
+};
+
+// Get the values from the page.
+function getValues(codeVersion) {
+    let startValue = document.getElementById("startValue").value;
+    let endValue = document.getElementById("endValue").value;
+    let firstWord = document.getElementById("firstWord").value;
+    let secondWord = document.getElementById("secondWord").value;
+    let roundValue = document.getElementById("roundValue").value;
+    let aboutValue = document.getElementById("aboutValue").value;
+
+    // Change the values of the number fields to integers and round them to whole numbers.
+    startValue = Math.round(parseInt(startValue));
+    endValue = Math.round(parseInt(endValue));
+    roundValue = Math.round(parseInt(roundValue));
+    aboutValue = Math.round(parseInt(aboutValue));
+
+    // Check to see if the numbers ar between 1 and 100 and not a negative number
+    if ((startValue &lt; 1 && startValue > 100) || Math.sign(startValue) === -1) {
+    alert("Please choose a starting number between 1 and 100");
+
+    } else if ((endValue &lt; 1 && endValue > 100) || Math.sign(endValue) === -1) {
+    alert("Please choose an ending number between 1 and 100");
+    
+    }else if ((roundValue &lt; 1 && roundValue > 100) || Math.sign(roundValue) === -1) {
+    alert("Please choose a round number between 1 and 100");
+
+    } else if ((aboutValue &lt; 1 && aboutValue > 100) || Math.sign(aboutValue) === -1) {
+    alert("Please choose an about number between 1 and 100");
+
+    // Check to make sure the ending number is larger than the starting number.
+    } else if (startValue >= endValue) {
+    alert("The starting number has to be smaller than the ending number");
+
+    
+    // Check to make sure the word fields are filled out.
+    } else if(!firstWord){
+    alert("Please enter the first word");
+    } else if(!secondWord){
+    alert("Please enter the second word");
+    } else {
+    // Call the generateResults function with all the values
+    //    passed via the arguments and assign it to the results variable.
+    // Note that the version of the code you chose will insert the appropriate function name.
+    let results = eval(codeVersion)(startValue, endValue, firstWord, secondWord, roundValue, aboutValue);
+
+    // Call the displayResults function and pass the results arguments to it.
+    displayResults(results, firstWord, secondWord, roundValue, aboutValue);
+    }
+}
+
+// The If/Then/Else version of the generate results function (default)
+// This function generates the number series in between the number values and assigns them to an array.
+//     Then it will switch the multiples of the number fields to the word fields.
+function generateResults(sValue, eValue, fWord, sWord, rValue, aValue) {
+    let raValue = rValue * aValue;
+    let results = [];
+    for (let i = sValue; i &lt;= eValue; i++) {
+    if(i % raValue === 0){
+        results.push(fWord + sWord);
+    }else if(i % rValue === 0){
+        results.push(fWord);
+    }else if(i % aValue === 0){
+        results.push(sWord);
+    }else{
+    results.push(i);
+    }
+    }
+    return results;
+}
+
+// Ternary version of the generate results function
+function generateResultsTern(sValue, eValue, fWord, sWord, rValue, aValue){
+    let results = [];
+    for (let i = sValue; i &lt;= eValue; i++) {
+    let value = ((i % rValue === 0 ? "Round" : "") + (i % aValue === 0 ? "About" : "") || i);
+    results.push(value);
+    }
+    return results;
+}
+
+// Switch case version of the generate results function
+function generateResultsSwitch(sValue, eValue, fWord, sWord, rValue, aValue){
+    let raValue = rValue * aValue;
+    let results = [];
+    let Mortgage Calculator = false;
+    let Round = false;
+    let About = false;
+
+    for (let i = sValue; i &lt;= eValue; i++) {
+    Mortgage Calculator = i % raValue === 0;
+    Round = i % rValue === 0;
+    About = i % aValue === 0;
+
+    switch(true){
+        case Mortgage Calculator:{
+        results.push("Mortgage Calculator");
+        break;
+        }
+        case Round:{
+        results.push("Round");
+        break;
+        }
+        case About:{
+        results.push("About")
+        break;
+        }
+        default:{
+        results.push(i);
+        break;
+        }
+    }
+    }
+    return results;
+}
+
+// This function will write the results to the html page.
+function displayResults(results, fWord, sWord) {
+    let templateRows = "";
+
+    // The for loop iterates through the results array,
+    //     then assigns a css class to words respectively.
+    for (let i = 0; i &lt;= results.length-1; i++) {
+    let className = "even";
+    let result = results[i];
+    let fizbuz = fWord + sWord;
+    if (result === fizbuz) {
+        className = "Mortgage Calculator";
+    }else if(result === fWord){
+        className = "round-value";
+    }else if(result === sWord){
+        className = "about-value";
+    } else {
+        className = "font-normal";
+    }
+
+    // The line below puts the above result in some html markup.
+    templateRows = templateRows + `&lt;tr>&lt;td class="${className}">${result}&lt;/td>&lt;/tr>`;
+    }
+    // The next line inserts the html into the html page.
+    document.getElementById("results").innerHTML = templateRows;
+}                                 
                 </code>
             </pre>
         </div>
-        <div class="col-lg-4"><h5>This code is structured in three functions.</h5>
-            <p>The first thing done was to add an event listener to the button so
-                the code will fire when the button is pressed.
+        <div class="col-lg-4">
+            <h5>This code is structured in three functions.</h5>
+            <p>The first section of code handles the select list and button.
+                When you click the button, the version of the code you chose
+                to run will execute.
             </p>
-            <p>The next getValues function gets the values from the number input fields,
-                 that being the Starting Number and Ending Number fields. It also makes
+            <p>The next getValues function gets the values from the number and text input fields.
+                 It also makes
                  a few checks to see if the numbers entered are valid. Finally it will
                  call on a couple of "helper" functions explained below.
-            <p>The first helper function is called generateNumbers. This function will
+            <p>The first helper function is called generateResults. This function will
                 generate a list of numbers in between and including the starting and 
                 ending numbers and put them into an array to be passed on later.
+                Then it will replace the first multiple(number), with
+                the first replaced word. The second multiple(number)
+                will be replaced by the second word.
+                Finally, the numbers that are a multiple of both the first and second number
+                are replaced with both words.
+                <br>Note that there are three versions of this code, which are the three
+                choices displayed in the dropdown list.
             </p>
-            <p>The second helper function is called displayNumbers. This will take the
-                numbers in the array, put them in some html code, and then inject them
+            <p>The second helper function is called displayResults. This will take the
+                results in the array, put them in some html code, and then inject them
                 into the web page for display.
             </p>
-            <p>So once the getValues function gets the values from the number fields and
-                checks to make sure those inputs are valid, it calls the generateNumbers
-                function to generate the numbers array, then it calls the displayNumbers
-                function to display the array passed on from the generateNumbers function
+            <p>In summary, once the getValues function gets the values from the number and text fields and
+                checks to make sure those inputs are valid, it calls the generateResults
+                function to generate the numbers array and replace the multiples with
+                the words entered in the text fields. Finally it calls the displayResults
+                function to display the array passed on from the generateResults function
                 into the web page.
             </p>
             <h5>Please <a href="#" alt="Contact Me">contact me</a> if you have any questions and/or would like to discuss
@@ -123,7 +299,6 @@
 <!-- Scripts JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
     <script src="assets/vendor/prism/prism.js"></script>
-
 </body>
 </html>
 
