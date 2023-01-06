@@ -29,23 +29,43 @@ function generateResults(valuesObj) {
   let results = [];
   let mPay = (valuesObj.loanAmount) * (valuesObj.rate / 1200) / (1 - Math.pow((1 + valuesObj.rate / 1200), -valuesObj.payments));
   let previousBalance = valuesObj.loanAmount;
+  let rate = valuesObj.rate;
+  let payments = valuesObj.payments;
+  let monthlyPayment = valuesObj.monthlyPayment;
 
-  for(let i = 1; i <= valuesObj.payments; i++){
+  for(let i = 1; i <= payments; i++){
+    let intPayment = previousBalance * rate/1200;
+    let princPayment = monthlyPayment - intPayment;
+    let remBalance = previousBalance - princPayment;
 
     // interestPayment: loanAmount or balance[i - 1] * rate/1200,
+
     // if(i = 1){
     //   previousBalance = valuesObj.loanAmount;
     // } else {
-    //   previousBalance = previousBalance[i - 1];
+    //   previousBalance = previousBalance + 1;
     // }
 
 
     results.push({
       month: i,
       monthlyPayment: mPay.toFixed(2),
-      interestPayment: previousBalance
-      
+      interestPayment: intPayment.toFixed(2),
+      principalPayment: princPayment.toFixed(2),
+      remainingBalance: remBalance.toFixed(2)
     });
+    // decrement princpayment or previousbalance?
+    // previousBalance = remBalance
+
+
+    //previous balance = 100
+    // interest payment = 100 * 1%/1200
+    // principal payment = 12.23 - (100 * 1%/1200)
+    // remaining balance = 100 - (12.23 - (100 * 1%/1200))
+    // previous balance reset to equals remaining balance = 100 - (12.23 - (100 * 1%/1200))
+
+    // set nex remaining balance here? =  Previous Remaining Balance - principal payments;
+
     // valuesObj['month'] = i;
     // valuesObj['monthlyPayment'] = (valuesObj.loanAmount) * (valuesObj.rate / 1200) / (1 - Math.pow((1 + valuesObj.rate / 1200), -valuesObj.payments))
     // results.push(valuesObj);
@@ -55,7 +75,7 @@ function generateResults(valuesObj) {
     // valuesObj.accruedInterest = last month interest + this months;
     // valuesObj.remainingBalance =  Previous Remaining Balance - principal payments;
   }
-  console.log(results);
+
   return results;
 }
 
@@ -69,14 +89,18 @@ function displayResults(results) {
     let month = results[i].month;
     let monthlyPayment = results[i].monthlyPayment;
     let interestPayment = results[i].interestPayment;
+    let principalPayment = results[i].principalPayment;
+    let remainingBalance = results[i].remainingBalance;
 
 
   templateRows = templateRows + 
   `<tr>
     <td>${month}</td>
     <td>${monthlyPayment}</td>
-    <td>xx</td>
+    <td>${principalPayment}</td>
     <td>${interestPayment}</td>
+    <td>xx</td>
+    <td>${remainingBalance}</td>
   </tr>`;
   }
 
