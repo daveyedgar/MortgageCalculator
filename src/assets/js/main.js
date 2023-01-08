@@ -1,12 +1,35 @@
 
+// validate user form inputs
+// set numbers to comma 1,000
+// extra payment field
+// down payment field?
+// tax, insurance, hoa, mortgage ins,
+// you payed this much extra
+
+document.getElementById("monthly").addEventListener("change", getYearly);
+document.getElementById("yearly").addEventListener("change", getMonthly);
 
 document.getElementById("btnSubmit").addEventListener("click", getValues);
+
+function getMonthly(){
+  let monthly = document.getElementById("monthly");
+  let yearly = document.getElementById("yearly");
+  yearly.focus();
+  monthly.value = yearly.value * 12;
+}
+
+function getYearly(){
+  let monthly = document.getElementById("monthly");
+  let yearly = document.getElementById("yearly");
+  monthly.focus();
+  yearly.value = (monthly.value / 12).toFixed(2);
+}
 
 function getValues() {
 
   let valuesObj = {};
   let loanAmount = document.getElementById("loanAmount").value;
-  let payments = document.getElementById("payments").value;
+  let payments = document.getElementById("monthly").value;
   let rate = document.getElementById("rate").value;
 
   // Change the values of the number fields to integers.
@@ -15,7 +38,7 @@ function getValues() {
   valuesObj.rate = Math.round(parseInt(rate));
 
   let results = generateResults(valuesObj);
-
+console.log(valuesObj);
   displayResults(results);
 }
 
@@ -27,7 +50,6 @@ function generateResults(valuesObj) {
   let rate = valuesObj.rate;
   let payments = valuesObj.payments;
   let monthlyPayment = mPay;
-  let loanAmount = valuesObj.loanAmount;
   
   for(let i = 1; i <= payments; i++){
     let intPayment = previousBalance * rate/1200;
@@ -44,7 +66,6 @@ function generateResults(valuesObj) {
 
     previousBalance = remBalance
   }
-  // results.push({loanAmount: loanAmount});
   return results;
 }
 
@@ -76,15 +97,15 @@ function displayResults(results) {
     ttlCost += +monthlyPayment;
     totalCost = ttlCost.toFixed(2);
 
-  templateRows = templateRows + 
-  `<tr>
-    <td>${month}</td>
-    <td>${monthlyPayment}</td>
-    <td>${principalPayment}</td>
-    <td>${interestPayment}</td>
-    <td>${accruedInterest}</td>
-    <td>${remainingBalance}</td>
-  </tr>`;
+    templateRows = templateRows + 
+    `<tr>
+      <td>${month}</td>
+      <td>${monthlyPayment}</td>
+      <td>${principalPayment}</td>
+      <td>${interestPayment}</td>
+      <td>${accruedInterest}</td>
+      <td>${remainingBalance}</td>
+    </tr>`;
   }
 
   document.getElementById("results").innerHTML = templateRows;

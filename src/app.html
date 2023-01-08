@@ -50,7 +50,7 @@
 <!-- MAIN -->
 <main class="flex-shrink-0 mt-5">
   <div class="container">
-    <div class="row row-cols-1 row-cols-lg-2">
+    <div class="row row-cols-1 row-cols-md-2">
         <div class="col">
             <form class="row row-cols-1 gy-2 gx-3 bg-gray py-3 pt-1 pb-3">
                 <div class="col">
@@ -58,14 +58,23 @@
                     <input id="loanAmount" type="number" class="form-control" aria-label="Loan Amount">
                 </div>
                 <div class="col">
-                    <label>Payments</label>
-                    <input id="payments" type="number" class="form-control" aria-label="Payments">
+                    <div class="row">
+                        <label>Term</label>
+                        <div class="col-md-6">
+                            <label>In Months</label>
+                            <input id="monthly" type="number" class="form-control" aria-label="Payments">
+                        </div>
+                        <div class="col-md-6">
+                            <label>In Years</label>
+                            <input id="yearly" type="number" class="form-control" aria-label="Payments">
+                        </div>
+                    </div>
                 </div>
                 <div class="col">
                     <label>Rate</label>
                     <input id="rate" type="number" class="form-control" aria-label="Rate">
                 </div>
-                <div class="col-12 col-lg-12 d-flex justify-content-start justify-content-lg-end mt-2">
+                <div class="col-12 col-md-12 d-flex justify-content-start justify-content-md-end mt-2">
                     <button type="button" id="btnSubmit" class="btn btn-outline-success btn-lg">Calculate</button>
                 </div>
             </form>
@@ -124,16 +133,16 @@
 <!-- FOOTER -->
 <footer class="footer mt-auto py-3 bg-dark sticky-footer text-light">
   <div class="container-fluid">
-      <div class="row row-cols-1 row-cols-lg-3 gy-2">
-          <div class="col text-light order-last order-lg-first">
+      <div class="row row-cols-1 row-cols-md-3 gy-2">
+          <div class="col text-light order-last order-md-first">
               <div>
                   <span class="text-muted">&copy;2022</span> David Bellerose | david@davidbellerose.com
               </div>
           </div>
-          <div class="col d-flex align-items-center justify-content-start justify-content-lg-center">
+          <div class="col d-flex align-items-center justify-content-start justify-content-md-center">
               <img src="assets/img/logo.svg" alt="David Bellerose Logo" height="24">
           </div>
-          <div class="col d-flex align-items-center justify-content-start justify-content-lg-end">
+          <div class="col d-flex align-items-center justify-content-start justify-content-md-end">
               <div class="row">
                   <div class="col social">
                       <a href="#" target="_blank" rel="noopener noreferrer"><i class="fab fa-linkedin fa-2x"></i></a>
