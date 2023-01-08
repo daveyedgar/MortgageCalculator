@@ -8,7 +8,6 @@
 
 document.getElementById("monthly").addEventListener("change", getYearly);
 document.getElementById("yearly").addEventListener("change", getMonthly);
-
 document.getElementById("btnSubmit").addEventListener("click", getValues);
 
 function getMonthly(){
@@ -26,11 +25,19 @@ function getYearly(){
 }
 
 function getValues() {
-
   let valuesObj = {};
   let loanAmount = document.getElementById("loanAmount").value;
   let payments = document.getElementById("monthly").value;
   let rate = document.getElementById("rate").value;
+
+  // validate user input
+  document.querySelectorAll('input').forEach( input => {
+    if((input.value < 1) || Math.sign(input.value) === -1){
+      iName = input.id.charAt(0).toUpperCase() + input.id.slice(1);
+      alert('Please enter a valid number in the "' + iName + '" field');
+      return;
+    }
+  });
 
   // Change the values of the number fields to integers.
   valuesObj.loanAmount = Math.round(parseInt(loanAmount));
