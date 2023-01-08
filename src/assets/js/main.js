@@ -36,10 +36,10 @@ function generateResults(valuesObj) {
 
     results.push({
       month: i,
-      monthlyPayment: mPay.toFixed(2),
-      interestPayment: intPayment.toFixed(2),
-      principalPayment: princPayment.toFixed(2),
-      remainingBalance: remBalance.toFixed(2),
+      monthlyPayment: mPay,
+      interestPayment: intPayment,
+      principalPayment: princPayment,
+      remainingBalance: remBalance,
     });
 
     previousBalance = remBalance
@@ -54,19 +54,27 @@ function displayResults(results) {
   let templateRows = "";
 
   let accInterest = 0;
+  let accruedInterest = 0;
+  let ttlInterest = 0;
   let totalInterest = 0;
+  let ttlCost = 0;
   let totalCost = 0;
 
   for (let i = 0; i <= results.length-1; i++) {
     let month = results[i].month;
-    let monthlyPayment = results[i].monthlyPayment;
-    let interestPayment = results[i].interestPayment;
-    let principalPayment = results[i].principalPayment;
-    let remainingBalance = results[i].remainingBalance;
+    let monthlyPayment = results[i].monthlyPayment.toFixed(2);
+    let interestPayment = results[i].interestPayment.toFixed(2);
+    let principalPayment = results[i].principalPayment.toFixed(2);
+    let remainingBalance = results[i].remainingBalance.toFixed(2);
+
     accInterest += +interestPayment;
     accruedInterest = accInterest.toFixed(2);
-    totalInterest += parseFloat(interestPayment);
-    totalCost += parseFloat(monthlyPayment);
+
+    ttlInterest += +interestPayment;
+    totalInterest = ttlInterest.toFixed(2);
+
+    ttlCost += +monthlyPayment;
+    totalCost = ttlCost.toFixed(2);
 
   templateRows = templateRows + 
   `<tr>
@@ -83,17 +91,17 @@ function displayResults(results) {
 
   // this is for the header, not the table
   let monthlyPaymentTag = document.getElementById("monthlyPayment");
-  monthlyPaymentTag.innerHTML = results[0].monthlyPayment;
+  monthlyPaymentTag.innerHTML = results[0].monthlyPayment.toFixed(2);
 
   let totalPrincipalTag = document.getElementById("totalPrincipal");
   let loanAmount = document.getElementById("loanAmount").value;
   totalPrincipalTag.innerHTML = loanAmount;
 
   let totalInterestTag = document.getElementById("totalInterest");
-  totalInterestTag.innerHTML = totalInterest.toFixed(2);
+  totalInterestTag.innerHTML = totalInterest;
 
   let totalCostTag = document.getElementById("totalCost");
-  totalCostTag.innerHTML = totalCost.toFixed(2);
+  totalCostTag.innerHTML = totalCost;
 
   // see the code link
   let codeLink = document.getElementById("codeLink");
