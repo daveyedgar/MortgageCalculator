@@ -1,8 +1,11 @@
-# JsSiteTemplate
-Js site template for js projects
+# Mortgage Calculator
 
-fix months > 36
-fix last month payment 
-fix early payoff show all months
-finish logo
-update links
+## A loan calculator written in javascript
+
+ - HTML
+ - CSS
+ - SASS
+ - Bootstrap
+ - Javascript
+ - NodeJs
+ 
