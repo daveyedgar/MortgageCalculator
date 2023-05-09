@@ -160,12 +160,12 @@ function displayResults(results) {
     templateRows =
       templateRows +
       `<tr>
-      <td>${month}</td>
-      <td>${monPayment}</td>
-      <td>${princPayment}</td>
-      <td>${intPayment}</td>
-      <td>${accruedInt}</td>
-      <td>${remBalance}</td>
+      <td>\$${month}</td>
+      <td>\$${monPayment}</td>
+      <td>\$${princPayment}</td>
+      <td>\$${intPayment}</td>
+      <td>\$${accruedInt}</td>
+      <td>\$${remBalance}</td>
     </tr>`;
   }
 // }
@@ -176,19 +176,19 @@ function displayResults(results) {
   // this is for the header, not the table
   let monthlyPaymentTag = document.getElementById("monthlyPayment");
   let mPayment = results[0].monthlyPayment.toFixed(2);
-  monthlyPaymentTag.innerHTML = parseFloat(mPayment).toLocaleString("en-US");
+  monthlyPaymentTag.innerHTML = "$" + parseFloat(mPayment).toLocaleString("en-US");
 
   let totalPrincipalTag = document.getElementById("totalPrincipal");
   let loanAmount = document.getElementById("loanAmount").value;
-  let lAmount = parseFloat(loanAmount).toLocaleString("en-US");
-  totalPrincipalTag.innerHTML = lAmount;
+  let lAmount =  "$" + parseFloat(loanAmount).toLocaleString("en-US");
+  totalPrincipalTag.innerHTML =lAmount;
 
   let totalInterestTag = document.getElementById("totalInterest");
-  let tInterest = parseFloat(totalInterest).toLocaleString("en-US");
+  let tInterest =  "$" + parseFloat(totalInterest).toLocaleString("en-US");
   totalInterestTag.innerHTML = tInterest;
 
   let totalCostTag = document.getElementById("totalCost");
-  let tCost = parseFloat(totalCost).toLocaleString("en-US");
+  let tCost = "$" + parseFloat(totalCost).toLocaleString("en-US");
   totalCostTag.innerHTML = tCost;
 
   // see the code link
