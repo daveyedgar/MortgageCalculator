@@ -25,6 +25,6 @@
 
  [Go To Website](https://mortgage-caclulator-javascript.netlify.app/index.html)
  
- [Go To C# ASP.NET Version](https://github.com/daveyedgar/MortgageCalculatorMVC)
+ [Go To C# ASP.NET Version](https://github.com/daveyedgar/MortgageCalculatorMVC){:target="_blank" rel="noopener"}
  
  
