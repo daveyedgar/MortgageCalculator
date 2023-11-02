@@ -11,6 +11,12 @@ document.getElementById("loanAmount").addEventListener("change", formatAmount);
 document.getElementById("btnSubmit").addEventListener("click", getValues);
 document.getElementById("btnReset").addEventListener("click", reset);
 
+// set numbers to currancy format
+let USDollar = new Intl.NumberFormat('en-US', {
+  style: 'currency',
+  currency: 'USD',
+});
+
 function reset(){
   document.querySelectorAll("input").forEach((input) => {
     input.value = "";
@@ -84,7 +90,7 @@ function generateResults(valuesObj) {
   for (let i = 1; i <= payments; i++) {
     let intPayment = (previousBalance * rate) / 1200;
     let princPayment = monthlyPayment - intPayment;
-    let remBalance = previousBalance - princPayment - extraPayment;
+    let remBalance = Math.abs(previousBalance - princPayment - extraPayment);
 
     results.push({
       month: i,
@@ -148,11 +154,12 @@ function displayResults(results) {
     totalCost = ttlCost.toFixed(2);
 
     // format numbers
-    monPayment = parseFloat(monthlyPayment).toLocaleString("en-US");
-    princPayment = parseFloat(principalPayment).toLocaleString("en-US");
-    remBalance = parseFloat(remainingBalance).toLocaleString("en-US");
-    intPayment = parseFloat(interestPayment).toLocaleString("en-US");
-    accruedInt = parseFloat(accruedInterest).toLocaleString("en-US");
+    monPayment = USDollar.format(monthlyPayment);
+    princPayment = USDollar.format(principalPayment);
+    intPayment = USDollar.format(interestPayment);
+    accruedInt = USDollar.format(accruedInterest);
+    remBalance = USDollar.format(remainingBalance);
+
 
     chartData.balanceData.push(remBalance);
     // chartData.monthData.push(month);
@@ -160,35 +167,33 @@ function displayResults(results) {
     templateRows =
       templateRows +
       `<tr>
-      <td>\$${month}</td>
-      <td>\$${monPayment}</td>
-      <td>\$${princPayment}</td>
-      <td>\$${intPayment}</td>
-      <td>\$${accruedInt}</td>
-      <td>\$${remBalance}</td>
+      <td>${month}</td>
+      <td>${monPayment}</td>
+      <td>${princPayment}</td>
+      <td>${intPayment}</td>
+      <td>${accruedInt}</td>
+      <td>${remBalance}</td>
     </tr>`;
   }
-// }
-
 
   document.getElementById("results").innerHTML = templateRows;
 
   // this is for the header, not the table
   let monthlyPaymentTag = document.getElementById("monthlyPayment");
   let mPayment = results[0].monthlyPayment.toFixed(2);
-  monthlyPaymentTag.innerHTML = "$" + parseFloat(mPayment).toLocaleString("en-US");
+  monthlyPaymentTag.innerHTML = USDollar.format(mPayment);
 
   let totalPrincipalTag = document.getElementById("totalPrincipal");
   let loanAmount = document.getElementById("loanAmount").value;
-  let lAmount =  "$" + parseFloat(loanAmount).toLocaleString("en-US");
+  let lAmount =  USDollar.format(loanAmount);
   totalPrincipalTag.innerHTML =lAmount;
 
   let totalInterestTag = document.getElementById("totalInterest");
-  let tInterest =  "$" + parseFloat(totalInterest).toLocaleString("en-US");
+  let tInterest =  USDollar.format(totalInterest);
   totalInterestTag.innerHTML = tInterest;
 
   let totalCostTag = document.getElementById("totalCost");
-  let tCost = "$" + parseFloat(totalCost).toLocaleString("en-US");
+  let tCost = USDollar.format(totalCost);
   totalCostTag.innerHTML = tCost;
 
   // see the code link

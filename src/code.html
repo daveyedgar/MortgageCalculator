@@ -37,7 +37,7 @@
                     <a class="nav-link" href="app.html">The App</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="code.html">Code</a>
+                    <a class="nav-link active" aria-current="page" href="code.html">The Code</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" target="_blank" href="https://github.com/davidbellerose/MortgageCalculator">Git Repo</a>
@@ -49,7 +49,7 @@
                     <a class="nav-link" target="_blank" href="https://davidbellerose.com/#contact">Contact</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" target="_blank" href="https://mortgage-calculator-asp-net.up.railway.app/">
+                    <a class="nav-link" target="_blank" href="https://mortgagecalculator-asp-net.up.railway.app/">
                         <img src="assets/img/go-to-c-sharp.webp" width="175"/>
                     </a>
                 </li>
@@ -66,177 +66,182 @@
         <div class="col-lg-8 order-lg-1 order-2">
             <pre class="line-numbers">
                 <code class="language-javascript">
-// This first section of code handles the drop down list and button
-// It will determine which code version was selected and pass that
-//   to the getValues function via an argument.
+document.getElementById("monthly").addEventListener("change", getYearly);
+document.getElementById("yearly").addEventListener("change", getMonthly);
+document.getElementById("loanAmount").addEventListener("blur", formatAmount);
+document.getElementById("loanAmount").addEventListener("change", formatAmount);
+document.getElementById("btnSubmit").addEventListener("click", getValues);
+document.getElementById("btnReset").addEventListener("click", reset);
 
-const btn = document.querySelector('#btnSubmit');
-const sb = document.querySelector('#inputGroupSelect');
-btn.onclick = (event) => {
-    let codeVersion = "";
-    event.preventDefault();
-    // show the selected index
-    switch (sb.value){
-        case "1":{
-        codeVersion = "generateResults";
-        break;
-        }
-        case "2": {
-        codeVersion = "generateResultsSwitch";
-        break;
-        }
-        case "3": {
-        codeVersion = "generateResultsTern";
-        break;
-        }
-        default :{
-        codeVersion = "generateResults";
-        break;
-        }
-    }
-    getValues(codeVersion);
+// set numbers to currancy format
+let USDollar = new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+});
+
+function reset(){
+    document.querySelectorAll("input").forEach((input) => {
+    input.value = "";
+    })
+    window.location.reload();
 };
 
-// Get the values from the page.
-function getValues(codeVersion) {
-    let startValue = document.getElementById("startValue").value;
-    let endValue = document.getElementById("endValue").value;
-    let firstWord = document.getElementById("firstWord").value;
-    let secondWord = document.getElementById("secondWord").value;
-    let roundValue = document.getElementById("roundValue").value;
-    let aboutValue = document.getElementById("aboutValue").value;
-
-    // Change the values of the number fields to integers and round them to whole numbers.
-    startValue = Math.round(parseInt(startValue));
-    endValue = Math.round(parseInt(endValue));
-    roundValue = Math.round(parseInt(roundValue));
-    aboutValue = Math.round(parseInt(aboutValue));
-
-    // Check to see if the numbers ar between 1 and 100 and not a negative number
-    if ((startValue &lt; 1 && startValue > 100) || Math.sign(startValue) === -1) {
-    alert("Please choose a starting number between 1 and 100");
-
-    } else if ((endValue &lt; 1 && endValue > 100) || Math.sign(endValue) === -1) {
-    alert("Please choose an ending number between 1 and 100");
-    
-    }else if ((roundValue &lt; 1 && roundValue > 100) || Math.sign(roundValue) === -1) {
-    alert("Please choose a round number between 1 and 100");
-
-    } else if ((aboutValue &lt; 1 && aboutValue > 100) || Math.sign(aboutValue) === -1) {
-    alert("Please choose an about number between 1 and 100");
-
-    // Check to make sure the ending number is larger than the starting number.
-    } else if (startValue >= endValue) {
-    alert("The starting number has to be smaller than the ending number");
-
-    
-    // Check to make sure the word fields are filled out.
-    } else if(!firstWord){
-    alert("Please enter the first word");
-    } else if(!secondWord){
-    alert("Please enter the second word");
-    } else {
-    // Call the generateResults function with all the values
-    //    passed via the arguments and assign it to the results variable.
-    // Note that the version of the code you chose will insert the appropriate function name.
-    let results = eval(codeVersion)(startValue, endValue, firstWord, secondWord, roundValue, aboutValue);
-
-    // Call the displayResults function and pass the results arguments to it.
-    displayResults(results, firstWord, secondWord, roundValue, aboutValue);
-    }
+function getMonthly() {
+    let monthly = document.getElementById("monthly");
+    let yearly = document.getElementById("yearly");
+    yearly.focus();
+    monthly.value = yearly.value * 12;
 }
 
-// The If/Then/Else version of the generate results function (default)
-// This function generates the number series in between the number values and assigns them to an array.
-//     Then it will switch the multiples of the number fields to the word fields.
-function generateResults(sValue, eValue, fWord, sWord, rValue, aValue) {
-    let raValue = rValue * aValue;
-    let results = [];
-    for (let i = sValue; i &lt;= eValue; i++) {
-    if(i % raValue === 0){
-        results.push(fWord + sWord);
-    }else if(i % rValue === 0){
-        results.push(fWord);
-    }else if(i % aValue === 0){
-        results.push(sWord);
-    }else{
-    results.push(i);
+function getYearly() {
+    let monthly = document.getElementById("monthly");
+    let yearly = document.getElementById("yearly");
+    monthly.focus();
+    yearly.value = (monthly.value / 12).toFixed(2);
+}
+
+function formatAmount() {
+    let fSpan = document.getElementById("fAmount");
+    fSpan.focus();
+    let amountInput = document.getElementById("loanAmount");
+    let fAmount = parseFloat(amountInput.value).toLocaleString("en-US");
+    fSpan.innerHTML = "($" + fAmount + ")";
+}
+
+function getValues() {
+    let valuesObj = {};
+    let loanAmount = document.getElementById("loanAmount").value;
+    let payments = document.getElementById("monthly").value;
+    let rate = document.getElementById("rate").value;
+    let extraPayment = document.getElementById("extraPayment").value;
+
+    // validate user input
+    document.querySelectorAll("input").forEach((input) => {
+    switch(input.id){
+        case "extraPayment":
+        if(extraPayment == "" || extraPayment &lt; 0){extraPayment = 0; document.getElementById("extraPayment").value = 0;}
+        break;
+        default:
+        if (input.value &lt; 1 || Math.sign(input.value) === -1) {
+            alert( 'Please enter a valid number in the "' + input.getAttribute("aria-label") + '" field');
+        }
+        break;
     }
+    });
+
+    // Change the values of the number fields to integers.
+    valuesObj.loanAmount = Math.round(parseInt(loanAmount));
+    valuesObj.payments = Math.round(parseInt(payments));
+    valuesObj.rate = Math.round(parseInt(rate));
+    valuesObj.extraPayment = Math.round(parseInt(extraPayment));
+
+    let results = generateResults(valuesObj);
+
+    displayResults(results);
+}
+
+function generateResults(valuesObj) {
+    let results = [];
+    let mPay =(valuesObj.loanAmount * (valuesObj.rate / 1200)) /(1 - Math.pow(1 + valuesObj.rate / 1200, -valuesObj.payments));
+    let previousBalance = valuesObj.loanAmount;
+    let rate = valuesObj.rate;
+    let payments = valuesObj.payments;
+    let monthlyPayment = mPay;
+    let extraPayment = valuesObj.extraPayment;
+
+    for (let i = 1; i &lt;= payments; i++) {
+    let intPayment = (previousBalance * rate) / 1200;
+    let princPayment = monthlyPayment - intPayment;
+    let remBalance = Math.abs(previousBalance - princPayment - extraPayment);
+
+    results.push({
+        month: i,
+        monthlyPayment: mPay,
+        interestPayment: intPayment,
+        principalPayment: princPayment,
+        remainingBalance: remBalance,
+    });
+
+    previousBalance = remBalance;
     }
     return results;
 }
 
-// Ternary version of the generate results function
-function generateResultsTern(sValue, eValue, fWord, sWord, rValue, aValue){
-    let results = [];
-    for (let i = sValue; i &lt;= eValue; i++) {
-    let value = ((i % rValue === 0 ? "Round" : "") + (i % aValue === 0 ? "About" : "") || i);
-    results.push(value);
-    }
-    return results;
-}
-
-// Switch case version of the generate results function
-function generateResultsSwitch(sValue, eValue, fWord, sWord, rValue, aValue){
-    let raValue = rValue * aValue;
-    let results = [];
-    let Mortgage Calculator = false;
-    let Round = false;
-    let About = false;
-
-    for (let i = sValue; i &lt;= eValue; i++) {
-    Mortgage Calculator = i % raValue === 0;
-    Round = i % rValue === 0;
-    About = i % aValue === 0;
-
-    switch(true){
-        case Mortgage Calculator:{
-        results.push("Mortgage Calculator");
-        break;
-        }
-        case Round:{
-        results.push("Round");
-        break;
-        }
-        case About:{
-        results.push("About")
-        break;
-        }
-        default:{
-        results.push(i);
-        break;
-        }
-    }
-    }
-    return results;
-}
-
-// This function will write the results to the html page.
-function displayResults(results, fWord, sWord) {
+function displayResults(results) {
     let templateRows = "";
 
-    // The for loop iterates through the results array,
-    //     then assigns a css class to words respectively.
-    for (let i = 0; i &lt;= results.length-1; i++) {
-    let className = "even";
-    let result = results[i];
-    let fizbuz = fWord + sWord;
-    if (result === fizbuz) {
-        className = "Mortgage Calculator";
-    }else if(result === fWord){
-        className = "round-value";
-    }else if(result === sWord){
-        className = "about-value";
-    } else {
-        className = "font-normal";
+    let accInterest = 0;
+    let accruedInterest = 0;
+    let ttlInterest = 0;
+    let totalInterest = 0;
+    let ttlCost = 0;
+    let totalCost = 0;
+
+    let chartData = {
+    balanceData: [],
+    monthData: []
+    };
+
+    for (let i = 0; i &lt;= results.length - 1; i++) {
+    let month = results[i].month;
+    let monthlyPayment = results[i].monthlyPayment.toFixed(2);
+    let interestPayment = results[i].interestPayment.toFixed(2);
+    let principalPayment = results[i].principalPayment.toFixed(2);
+    let remainingBalance = results[i].remainingBalance.toFixed(2);
+
+    accInterest += +interestPayment;
+    accruedInterest = accInterest.toFixed(2);
+
+    ttlInterest += +interestPayment;
+    totalInterest = ttlInterest.toFixed(2);
+
+    ttlCost += +monthlyPayment;
+    totalCost = ttlCost.toFixed(2);
+
+    // format numbers
+    monPayment = USDollar.format(monthlyPayment);
+    princPayment = USDollar.format(principalPayment);
+    intPayment = USDollar.format(interestPayment);
+    accruedInt = USDollar.format(accruedInterest);
+    remBalance = USDollar.format(remainingBalance);
+
+
+    templateRows =
+        templateRows +
+        `&lt;tr>
+        &lt;td>${month}&lt;/td>
+        &lt;td>${monPayment}&lt;/td>
+        &lt;td>${princPayment}&lt;/td>
+        &lt;td>${intPayment}&lt;/td>
+        &lt;td>${accruedInt}&lt;/td>
+        &lt;td>${remBalance}&lt;/td>
+    &lt;/tr>`;
     }
 
-    // The line below puts the above result in some html markup.
-    templateRows = templateRows + `&lt;tr>&lt;td class="${className}">${result}&lt;/td>&lt;/tr>`;
-    }
-    // The next line inserts the html into the html page.
     document.getElementById("results").innerHTML = templateRows;
-}                                 
+
+    // this is for the header, not the table
+    let monthlyPaymentTag = document.getElementById("monthlyPayment");
+    let mPayment = results[0].monthlyPayment.toFixed(2);
+    monthlyPaymentTag.innerHTML = USDollar.format(mPayment);
+
+    let totalPrincipalTag = document.getElementById("totalPrincipal");
+    let loanAmount = document.getElementById("loanAmount").value;
+    let lAmount =  USDollar.format(loanAmount);
+    totalPrincipalTag.innerHTML =lAmount;
+
+    let totalInterestTag = document.getElementById("totalInterest");
+    let tInterest =  USDollar.format(totalInterest);
+    totalInterestTag.innerHTML = tInterest;
+
+    let totalCostTag = document.getElementById("totalCost");
+    let tCost = USDollar.format(totalCost);
+    totalCostTag.innerHTML = tCost;
+
+    // see the code link
+    let codeLink = document.getElementById("codeLink");
+    codeLink.innerHTML = '&lt;a href="code.html">See The Code&lt;/a>';
+}
                 </code>
             </pre>
         </div>
