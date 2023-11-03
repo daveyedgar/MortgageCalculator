@@ -107,24 +107,24 @@
         <div class="col">
             <form id="formHeader" class="row row-cols-1 gy-2 gx-3">
                 <div class="col-12 text-center">
-                    <p><i>Your Monthly Payments</i></p>
+                    <i>Your Monthly Payments</i>
                 </div>
                 <div class="col-12 text-center mb-2">
                     <div><span id="monthlyPayment" class="fw-bold fs-1"></span></div>
                 </div>
-                <div class="col-6">
+                <div class="col-6 text-end">
                     <span>Total Principal:</span>
                 </div>
                 <div class="col-6">
                     <span id="totalPrincipal">---</span>
                 </div>
-                <div class="col-6">
+                <div class="col-6 text-end">
                     <span>Total Interest</span>
                 </div>
                 <div class="col-6">
                     <span id="totalInterest">---</span>
                 </div>
-                <div class="col-6">
+                <div class="col-6 text-end">
                     <span>Total Cost</span>
                 </div>
                 <div class="col-6">
@@ -141,15 +141,15 @@
     </div>
     <hr>
     <div class="col-12">
-        <table class="table table-striped table-sm">
+        <table class="table table-striped table-sm table-bordered">
             <thead class="theadbg text-light">
                 <tr>
-                    <th>Month</th>
-                    <th>Payment</th>
-                    <th>Principal</th>
-                    <th>Interest</th>
-                    <th>Accrued Interest</th>
-                    <th>Balance</th>
+                    <th class="col-1 text-center">Month</th>
+                    <th class="text-center">Payment</th>
+                    <th class="text-center">Principal</th>
+                    <th class="text-center">Interest</th>
+                    <th class="text-center">Accrued Interest</th>
+                    <th class="text-center">Balance</th>
                 </tr>
             </thead>
             <tbody id="results">

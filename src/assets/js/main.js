@@ -167,12 +167,12 @@ function displayResults(results) {
     templateRows =
       templateRows +
       `<tr>
-      <td>${month}</td>
-      <td>${monPayment}</td>
-      <td>${princPayment}</td>
-      <td>${intPayment}</td>
-      <td>${accruedInt}</td>
-      <td>${remBalance}</td>
+      <td class="ps-4">${month}</td>
+      <td class="text-end">${monPayment}</td>
+      <td class="text-end">${princPayment}</td>
+      <td class="text-end">${intPayment}</td>
+      <td class="text-end">${accruedInt}</td>
+      <td class="text-end">${remBalance}</td>
     </tr>`;
   }
 
