@@ -37,6 +37,16 @@ word-break: normal;
 word-wrap: normal;
 }
 
+.logo {
+  width: 600px;
+  height: auto;
+  //border: 5px solid #0e6f93;
+  //padding: 5px;
+  box-shadow: -4px 5px 11px -1px rgba(0,0,0,0.54);
+  -webkit-box-shadow: -4px 5px 11px -1px rgba(0,0,0,0.54);
+  -moz-box-shadow: -4px 5px 11px -1px rgba(0,0,0,0.54);
+}
+
 .about-value{
   color: blue;
 }
